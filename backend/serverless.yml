@@ -24,11 +24,9 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
-    PROJECT_NAME: udapeople
-    TODOS_TABLE: Todos-${self:provider.stage}
-    #TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: udapeople-${self:provider.stage}
-    SIGNED_URL_EXPIRATION: 300
+    PROJECT_NAME: udacity
+    TODOS_TABLE: udacity-serverless-application-todo-${self:provider.stage}
+    S3_BUCKET_NAME: udacity-serverless-application-todo-${self:provider.stage}
 
 custom:
   documentation:

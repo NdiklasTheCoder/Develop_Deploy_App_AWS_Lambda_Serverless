@@ -1,16 +1,12 @@
-import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 import 'source-map-support/register'
-import { verify} from 'jsonwebtoken'
+import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
+import { verify } from 'jsonwebtoken'
 import { createLogger } from '../../utils/logger'
 import Axios from 'axios'
 import { JwtPayload } from '../../auth/JwtPayload'
 
 const logger = createLogger('auth');
-
-// TODO: Provide a URL that can be used to download a certificate that can be used
-// to verify JWT token signature.
-// To get this URL you need to go to an Auth0 page -> Show Advanced Settings -> Endpoints -> JSON Web Key Set
-const jwksUrl = 'https://dev-fjp-3wf9.us.auth0.com/.well-known/jwks.json';
+const jwksUrl = 'https://dev-xskges1x.us.auth0.com/.well-known/jwks.json';
 
 
 export const handler = async (
@@ -22,7 +18,6 @@ export const handler = async (
   try {
 
     const jwtToken = await verifyToken(event.authorizationToken)
-
     logger.info('User was authorized', jwtToken)
 
     return {
@@ -63,26 +58,26 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
 
     const token = getToken(authHeader)
     const res = await Axios.get(jwksUrl);
-  // TODO: Implement token verification
-  // You should implement it similarly to how it was implemented for the exercise for the lesson 5
-  // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
-  const pemData = res['data']['keys'][0]['x5c'][0]
-  const cert = `-----BEGIN CERTIFICATE-----\n${pemData}\n-----END CERTIFICATE-----`
 
-  return verify(token, cert, { algorithms: ['RS256'] }) as JwtPayload
-} catch(err){
-  logger.error('Fail to authenticate', err)
-}
+    // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
+    const pemData = res['data']['keys'][0]['x5c'][0]
+    const cert = `-----BEGIN CERTIFICATE-----\n${pemData}\n-----END CERTIFICATE-----`
+
+    return verify(token, cert, { algorithms: ['RS256'] }) as JwtPayload
+  } catch (err) {
+    logger.error('Fail to authenticate', err)
+  }
 }
 
 function getToken(authHeader: string): string {
-if (!authHeader) throw new Error('No authentication header')
+  if (!authHeader) throw new Error('authentication header not Found')
 
-if (!authHeader.toLowerCase().startsWith('bearer '))
-  throw new Error('Invalid authentication header')
+  if (!authHeader.toLowerCase().startsWith('bearer '))
+    throw new Error('authentication header is invalid')
 
-const split = authHeader.split(' ')
-const token = split[1]
+  const split = authHeader.split(' ')
+  const the_token = split[1]
 
-return token
+  return the_token
 }
+

@@ -24,9 +24,9 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
-    PROJECT_NAME: udacity
-    TODOS_TABLE: udacity-serverless-application-todo-${self:provider.stage}
-    S3_BUCKET_NAME: udacity-serverless-application-todo-${self:provider.stage}
+    PROJECT_NAME: udapeople
+    TODOS_TABLE: udapeople-serverless-${self:provider.stage}
+    S3_BUCKET_NAME: udapeople-serverless-${self:provider.stage}
 
 custom:
   documentation:
